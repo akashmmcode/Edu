@@ -4,4 +4,13 @@
 
 table {
   width: 50rem;
+  margin: auto;
+}
+
+.table_outer_div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
 }

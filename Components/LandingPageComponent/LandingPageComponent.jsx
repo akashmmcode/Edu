@@ -1,11 +1,18 @@
 import React from "react";
 import studentslist from "../../src/assets/studentsdetails.json";
 import "./LandingPageComponent.css";
-import { ModalComponent } from "../index";
+import { ModalComponent, HeaderComponent, NavComponent } from "../index";
 
 const LandingPageComponent = () => {
   const [studentlist, setStudentList] = React.useState(studentslist);
   const [isModalOpen, setModalIsOpen] = React.useState(false);
+  const [newStudent, setNewStudent] = React.useState({
+    name: "",
+    subject: "",
+    marks: "",
+  });
+
+  console.log(newStudent);
 
   function openModal(event) {
     event.preventDefault();
@@ -21,9 +28,9 @@ const LandingPageComponent = () => {
   }
 
   function closeModal(event) {
+    // event.preventDefault();
     const htmlTag = document.querySelector("html");
     setModalIsOpen(false);
-    event.preventDefault();
     if (htmlTag) {
       htmlTag.classList.add("modal-is-closing");
       setTimeout(() => {
@@ -33,61 +40,76 @@ const LandingPageComponent = () => {
     }
   }
 
+  function handleChange(event) {
+    setNewStudent((prev) => {
+      return {
+        ...prev,
+        [event.target.name]: event.target.value,
+      };
+    });
+  }
+
+  function addNewStudent() {
+    setStudentList([...studentlist, newStudent]);
+    setNewStudent({
+      name: "",
+      subject: "",
+      marks: "",
+    });
+    closeModal();
+  }
+
   return (
     <>
-      <ModalComponent modalstatus={isModalOpen} modaloff={closeModal} />
+      <NavComponent />
+      {/* <HeaderComponent/> */}
 
-      {/* <dialog open={isModalOpen} className="modal-is-open modal-is-opening">
-        <article>
-          <h2>Add New Student</h2>
-          <p>Name</p>
-          <ul>
-            <li>Membership: Individual</li>
-            <li>Price: $10</li>
-          </ul>
-          <footer>
-            <button className="secondary" onClick={closeModal}>
-              Cancel
-            </button>
-            <button>Confirm</button>
-          </footer>
-        </article>
-      </dialog> */}
-      <table>
-        <thead data-theme="light">
-          <tr>
-            <th scope="col" className="header">
-              Name
-            </th>
-            <th scope="col" className="header">
-              Subject
-            </th>
-            <th scope="col" className="header">
-              Mark
-            </th>
-            <th scope="col" className="header">
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {studentlist.map((item) => {
-            return (
-              <tr>
-                <th scope="row">{item.name}</th>
+      <ModalComponent
+        modalstatus={isModalOpen}
+        modaloff={closeModal}
+        handleChange={handleChange}
+        addstudent={addNewStudent}
+        studentreset={newStudent}
 
-                <td>{item.subject}</td>
+      />
 
-                <td>{item.marks}</td>
+      <div className="table_outer_div">
+        <table>
+          <thead data-theme="light">
+            <tr>
+              <th scope="col" className="header">
+                Name
+              </th>
+              <th scope="col" className="header">
+                Subject
+              </th>
+              <th scope="col" className="header">
+                Mark
+              </th>
+              <th scope="col" className="header">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {studentlist.map((item) => {
+              return (
+                <tr key={item.name}>
+                  <th scope="row">{item.name}</th>
 
-                <td>
-                  <button>Action</button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  <td>{item.subject}</td>
+
+                  <td>{item.marks}</td>
+
+                  <td>
+                    <button>Action</button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <button onClick={openModal}>Add New Student</button>
     </>
   );

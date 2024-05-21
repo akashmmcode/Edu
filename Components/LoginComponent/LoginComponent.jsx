@@ -1,6 +1,7 @@
 import React from "react";
 import { userslistcontext } from "../../src/main";
 import { useNavigate } from "react-router-dom";
+import "./LoginComponent.css"
 
 const LoginComponent = () => {
   const userslist = React.useContext(userslistcontext);
@@ -40,7 +41,7 @@ const LoginComponent = () => {
 
   return (
     <>
-      <div>
+      <div className="login_outer_div">
         <article>
           <input
             type="text"

@@ -35,7 +35,7 @@ const LandingPageComponent = () => {
 
   return (
     <>
-      <ModalComponent modalstatus={isModalOpen} />
+      <ModalComponent modalstatus={isModalOpen} modaloff={closeModal} />
 
       {/* <dialog open={isModalOpen} className="modal-is-open modal-is-opening">
         <article>

@@ -1,7 +1,12 @@
-const ModalComponent = () => {
+const ModalComponent = (props) => {
+  console.log(props);
+
   return (
     <>
-      <dialog open={isModalOpen} className="modal-is-open modal-is-opening">
+      <dialog
+        open={props.modalstatus}
+        className="modal-is-open modal-is-opening"
+      >
         <article>
           <h2>Add New Student</h2>
           <p>Name</p>
@@ -10,7 +15,7 @@ const ModalComponent = () => {
             <li>Price: $10</li>
           </ul>
           <footer>
-            <button className="secondary" onClick={closeModal}>
+            <button className="secondary" onClick={props.modaloff}>
               Cancel
             </button>
             <button>Confirm</button>

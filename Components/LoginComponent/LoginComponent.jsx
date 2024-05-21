@@ -43,6 +43,7 @@ const LoginComponent = () => {
     <>
       <div className="login_outer_div">
         <article>
+          <h1>Teachers Corp</h1>
           <input
             type="text"
             name="username"

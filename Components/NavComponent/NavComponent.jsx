@@ -14,7 +14,7 @@ const NavComponent = () => {
     <nav>
       <ul>
         <li>
-          <strong>Teachers Corp</strong>
+          <strong className='logo'>Teachers Corp</strong>
         </li>
       </ul>
       <ul>

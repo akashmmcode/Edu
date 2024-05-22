@@ -2,7 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { LoginComponent, LandingPageComponent } from "../Components";
+import {
+  LoginComponent,
+  LandingPageComponent,
+  ErrorComponent,
+} from "../Components";
 import userslist from "./assets/userdetails.json";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
@@ -24,6 +28,7 @@ const approuter = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
+    errorElement: <ErrorComponent />,
   },
   {
     path: "/landing",

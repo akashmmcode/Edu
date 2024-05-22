@@ -1,6 +1,6 @@
-const ModalComponent = (props) => {
-  console.log(props);
+import "./ModalComponent.css";
 
+const ModalComponent = (props) => {
   return (
     <>
       <dialog
@@ -9,7 +9,6 @@ const ModalComponent = (props) => {
       >
         <article>
           <h2>Add New Student</h2>
-          <p>Name</p>
           <input
             type="text"
             name="name"
@@ -17,8 +16,9 @@ const ModalComponent = (props) => {
             aria-label="Text"
             value={props.studentreset.name}
             onChange={props.handleChange}
+            aria-invalid={props.checkFlag}
           />
-          <p>Subject</p>
+          {props.checkFlag && <p>Name already exists</p>}
           <input
             type="text"
             name="subject"
@@ -27,7 +27,6 @@ const ModalComponent = (props) => {
             value={props.studentreset.subject}
             onChange={props.handleChange}
           />
-          <p>Marks</p>
           <input
             type="number"
             name="marks"
@@ -35,6 +34,8 @@ const ModalComponent = (props) => {
             aria-label="Number"
             value={props.studentreset.marks}
             onChange={props.handleChange}
+            min="0"
+            max="10"
           />
           <footer>
             <button className="secondary" onClick={props.modaloff}>

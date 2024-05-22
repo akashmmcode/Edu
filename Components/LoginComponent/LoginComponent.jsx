@@ -1,7 +1,7 @@
 import React from "react";
 import { userslistcontext } from "../../src/main";
 import { useNavigate } from "react-router-dom";
-import "./LoginComponent.css"
+import "./LoginComponent.css";
 
 const LoginComponent = () => {
   const userslist = React.useContext(userslistcontext);
@@ -12,25 +12,40 @@ const LoginComponent = () => {
     password: "",
   });
 
+  const [errorblock, setErrorblock] = React.useState();
+
   console.log(loggedinUser);
   console.log(userslist);
 
-  function Login() {
-    const user = userslist.teachers.find(
-      (teacher) =>
-        teacher.username === loggedinUser.username &&
-        teacher.password === loggedinUser.password
-    );
+  function validatePassword(password) {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return regex.test(password);
+  }
 
-    if (user) {
-      alert("Login successful");
-      navigate("/landing");
+  function Login() {
+    const passwordcheck = validatePassword(loggedinUser.password);
+
+    if (passwordcheck) {
+      const user = userslist.teachers.find(
+        (teacher) =>
+          teacher.username === loggedinUser.username &&
+          teacher.password === loggedinUser.password
+      );
+
+      if (user) {
+        alert("Login successful");
+        navigate("/landing");
+      } else {
+        alert("Invalid username or password");
+      }
     } else {
-      alert("Invalid username or password");
+      setErrorblock(true);
     }
   }
 
   function handleChange(event) {
+    setErrorblock("");
     setLoggedinUser((prev) => {
       return {
         ...prev,
@@ -47,7 +62,7 @@ const LoginComponent = () => {
           <input
             type="text"
             name="username"
-            placeholder="Text"
+            placeholder="UserName"
             aria-label="Text"
             onChange={handleChange}
           />
@@ -58,9 +73,33 @@ const LoginComponent = () => {
             placeholder="Password"
             aria-label="Password"
             onChange={handleChange}
+            aria-invalid={errorblock}
           />
 
-          <button onClick={Login}>Login</button>
+          <button className="login-btn" onClick={Login}>
+            Login
+          </button>
+          {errorblock && (
+            <ul className="error_block">
+              <li>
+                <p>At least 8 characters long.</p>
+              </li>
+              <li>
+                <p>
+                  Contains at least one lowercase letter. Contains at least one
+                </p>
+              </li>
+              <li>
+                <p>
+                  uppercase letter. Contains at least one digit. Contains at
+                  least one
+                </p>
+              </li>
+              <li>
+                <p>special character (e.g., !@#$%^&*).</p>
+              </li>
+            </ul>
+          )}
         </article>
       </div>
     </>

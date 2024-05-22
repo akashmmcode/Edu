@@ -1,19 +1,22 @@
 import React from "react";
 import studentslist from "../../src/assets/studentsdetails.json";
 import "./LandingPageComponent.css";
-import { ModalComponent, HeaderComponent, NavComponent } from "../index";
+import { ModalComponent, NavComponent } from "../index";
 
 const LandingPageComponent = () => {
+  //studentlist is an object and getting it as dummy data.
   const [studentlist, setStudentList] = React.useState(studentslist);
   const [isModalOpen, setModalIsOpen] = React.useState(false);
+  //newStudent is the state to add a new student to the existing data.
   const [newStudent, setNewStudent] = React.useState({
     name: "",
     subject: "",
     marks: "",
   });
+  //studentAvailCheck is to check for the availability of the student.
+  const [studentAvailCheck, setStudentAvailCheck] = React.useState();
 
-  console.log(newStudent);
-
+  //functions provided by PICO css for opening and closing of the modal
   function openModal(event) {
     event.preventDefault();
     const htmlTag = document.querySelector("html");
@@ -26,6 +29,8 @@ const LandingPageComponent = () => {
       }, modalAnimationDuration);
     }
   }
+
+  //functions provided by PICO css for opening and closing of the modal
 
   function closeModal(event) {
     // event.preventDefault();
@@ -41,6 +46,7 @@ const LandingPageComponent = () => {
   }
 
   function handleChange(event) {
+    setStudentAvailCheck("");
     setNewStudent((prev) => {
       return {
         ...prev,
@@ -50,14 +56,26 @@ const LandingPageComponent = () => {
   }
 
   function addNewStudent() {
-    setStudentList([...studentlist, newStudent]);
-    setNewStudent({
-      name: "",
-      subject: "",
-      marks: "",
-    });
-    closeModal();
+    const studentCheckIfPresent = studentlist.find(
+      (element) => element.name === newStudent.name
+    );
+
+    if (studentCheckIfPresent) {
+      setStudentAvailCheck(true);
+    } else {
+      setStudentList([...studentlist, newStudent]);
+      setNewStudent({
+        name: "",
+        subject: "",
+        marks: "",
+      });
+      closeModal();
+    }
   }
+
+  const removeStudent = (name) => {
+    setStudentList((prev) => prev.filter((item) => item.name !== name));
+  };
 
   return (
     <>
@@ -70,7 +88,7 @@ const LandingPageComponent = () => {
         handleChange={handleChange}
         addstudent={addNewStudent}
         studentreset={newStudent}
-
+        checkFlag={studentAvailCheck}
       />
 
       <div className="table_outer_div">
@@ -102,7 +120,9 @@ const LandingPageComponent = () => {
                   <td>{item.marks}</td>
 
                   <td>
-                    <button>Action</button>
+                    <button onClick={() => removeStudent(item.name)}>
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );

@@ -1,10 +1,28 @@
-.login_outer_div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-image: url('../../src/assets/login_bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+.login_outer_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url("../../src/assets/login_bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.error_block {
+  text-align: left;
+}
+
+p {
+  font-size: small;
+}
+
+.login-btn {
+  background-color: #e9ecef;
+  color: black;
+}
+
+article {
+  background-color: #212529;
+  width: 30rem;
 }

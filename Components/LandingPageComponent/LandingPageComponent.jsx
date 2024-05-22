@@ -4,7 +4,6 @@ import "./LandingPageComponent.css";
 import { ModalComponent, NavComponent } from "../index";
 import { useNavigate } from "react-router-dom";
 
-
 const LandingPageComponent = () => {
   const navigate = useNavigate();
   //studentlist is an object and getting it as dummy data.
@@ -24,10 +23,9 @@ const LandingPageComponent = () => {
 
   const userauth = localStorage.getItem("user");
 
-  
-  // this is a small authentication metord to limit the user to not access the 
+  // this is a small authentication metord to limit the user to not access the
   //landing page using the URL wihout loggin in.
-  // so im setting a local storage on successful login and clearing the local storage on logut. 
+  // so im setting a local storage on successful login and clearing the local storage on logut.
   React.useEffect(() => {
     if (userauth === null) {
       navigate("/");
@@ -74,30 +72,60 @@ const LandingPageComponent = () => {
     });
   }
 
+
+  // to add a new student to the list
   function addNewStudent() {
+    //checking if the student and the subject are already present
     const studentCheckIfPresent = studentlist.find(
-      (element) => element.name === newStudent.name
+      (element) =>
+        element.name === newStudent.name &&
+        element.subject === newStudent.subject
     );
 
     const markslimit = newStudent.marks > 100 ? true : false;
 
+
+    //if the student and the subject are already present
     if (studentCheckIfPresent) {
-      setStudentAvailCheck(true);
-    } else if (markslimit) {
-      setStudentMarkLimit(true);
-    } else {
-      setStudentList([...studentlist, newStudent]);
+
+      //mapping tru the array and checking if the name is same
+      //(cheking just the name here because if it has entered this block both name and subject are same)
+      //then using the spread operator copying the whole object and changing just the marks adding the prevmarks and present marks.
+      const updatedStudentList = studentlist.map((student) =>
+        student.name === newStudent.name
+          ? { ...student, marks: Number(student.marks) + Number(newStudent.marks) }
+          : student
+      );
+
+      //then set the updated list to the main table.
+      setStudentList([...updatedStudentList]);
+      // close the modal 
+      closeModal();
+      //clear the modal state
       setNewStudent({
         name: "",
         subject: "",
         marks: "",
       });
+
+    } else if (markslimit) {
+      setStudentMarkLimit(true);
+    } else {
+      // if it is a new student or the same student with diff subject will come to this block and set state.
+      setStudentList([...studentlist, newStudent]);
+      //clear the modal state
+      setNewStudent({
+        name: "",
+        subject: "",
+        marks: "",
+      });
+      // close the modal 
       closeModal();
     }
   }
 
-  const removeStudent = (name) => {
-    setStudentList((prev) => prev.filter((item) => item.name !== name));
+  const removeStudent = (name,subject) => {
+    setStudentList((prev) => prev.filter((item) => !(item.name == name && item.subject == subject)));
   };
 
   // will display the page only if the userauth is present else it will redirect to the login page.
@@ -137,7 +165,7 @@ const LandingPageComponent = () => {
               <tbody>
                 {studentlist.map((item) => {
                   return (
-                    <tr key={item.name}>
+                    <tr key={item.name + item.subject}>
                       <th scope="row">{item.name}</th>
 
                       <td>{item.subject}</td>
@@ -145,7 +173,7 @@ const LandingPageComponent = () => {
                       <td>{item.marks}</td>
 
                       <td>
-                        <button onClick={() => removeStudent(item.name)}>
+                        <button onClick={() => removeStudent(item.name,item.subject)}>
                           Delete
                         </button>
                       </td>

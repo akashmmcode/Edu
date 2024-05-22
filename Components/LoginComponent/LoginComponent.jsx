@@ -14,8 +14,6 @@ const LoginComponent = () => {
 
   const [errorblock, setErrorblock] = React.useState();
 
-  console.log(loggedinUser);
-  console.log(userslist);
 
   function validatePassword(password) {
     const regex =

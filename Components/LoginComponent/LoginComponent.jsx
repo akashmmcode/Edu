@@ -35,6 +35,7 @@ const LoginComponent = () => {
 
       if (user) {
         alert("Login successful");
+        localStorage.setItem("user", "authorised");
         navigate("/landing");
       } else {
         alert("Invalid username or password");

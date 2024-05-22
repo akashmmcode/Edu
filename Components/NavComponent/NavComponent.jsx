@@ -7,6 +7,7 @@ const NavComponent = () => {
 
 
   function logout(){
+    localStorage.clear();
     navigate("/");
   }
 

@@ -36,7 +36,9 @@ const ModalComponent = (props) => {
             onChange={props.handleChange}
             min="0"
             max="10"
+            aria-invalid={props.marklimit}
           />
+          {props.marklimit && <p>Marks should not exeed 100</p>}
           <footer>
             <button className="secondary" onClick={props.modaloff}>
               Cancel
